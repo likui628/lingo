@@ -1,9 +1,9 @@
+import { UserButton } from "@clerk/nextjs";
 
 export default function Home() {
   return (
-   <p>
-    Hello DuoLingo
-   </p>
-
+      <div className="h-screen">
+          <UserButton/>
+      </div>
   );
 }
