@@ -1,8 +1,10 @@
 import {StickyWrapper} from "@/components/sticky-wrapper";
 import {UserProgress} from "@/components/user-progress";
 import {Header} from "./header";
+import {Unit} from "./unit";
 import {Promo} from "@/components/promo";
 import {Quests} from "@/components/quests";
+import {FeedWrapper} from "@/components/fead-wrapper";
 
 const LearnPage = () => {
   return (
@@ -13,26 +15,10 @@ const LearnPage = () => {
         <Quests/>
       </StickyWrapper>
 
-      <div className="flex-1 relative top-0 pb-10">
+      <FeedWrapper>
         <Header title="Spanish"/>
-        <div className="bg-amber-200  h-[500px]">
-          <div>课程title</div>
-
-        </div>
-        <div className="bg-amber-200  h-[500px]">
-          <div>课程title</div>
-
-        </div>
-        <div className="bg-amber-200  h-[500px]">
-          <div>课程title</div>
-
-        </div>
-        <div className="bg-amber-200  h-[500px]">
-          <div>课程title</div>
-
-        </div>
-      </div>
-
+        <Unit/>
+      </FeedWrapper>
     </div>
   );
 }
