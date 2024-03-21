@@ -7,4 +7,71 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-// todo: add schema
+model Course {
+  id       String @id @default(uuid())
+  title    String
+  imageSrc String
+
+  units Unit[]
+
+  @@map("courses")
+}
+
+model Unit {
+  id          String @id @default(uuid())
+  title       String
+  description String
+  order       Int
+
+  course   Course @relation(fields: [courseId], references: [id])
+  courseId String
+
+  lessons Lesson[]
+
+  @@map("units")
+}
+
+model Lesson {
+  id    String @id @default(uuid())
+  title String
+  order Int
+
+  unit   Unit   @relation(fields: [unitId], references: [id])
+  unitId String
+
+  challenges Challenge[]
+
+  @@map("lessons")
+}
+
+model Challenge {
+  id       String        @id @default(uuid())
+  question String
+  type     ChallengeType
+  order    Int
+
+  lesson   Lesson @relation(fields: [lessonId], references: [id])
+  lessonId String
+
+  challengeOptions ChallengeOption[]
+
+  @@map("challenges")
+}
+
+enum ChallengeType {
+  SELECT
+  ASSIST
+}
+
+model ChallengeOption {
+  id       String  @id @default(uuid())
+  text     String
+  correct  Boolean
+  imageSrc String?
+  audioSrc String?
+
+  challenge   Challenge @relation(fields: [challengeId], references: [id])
+  challengeId String
+
+  @@map("challenge_options")
+}
