@@ -12,7 +12,8 @@ model Course {
   title    String
   imageSrc String
 
-  units Unit[]
+  units        Unit[]
+  userProgress UserProgress[]
 
   @@map("courses")
 }
@@ -74,4 +75,17 @@ model ChallengeOption {
   challengeId String
 
   @@map("challenge_options")
+}
+
+model UserProgress {
+  userId       String @id
+  userName     String @default("User")
+  userImageSrc String @default("/mascot.svg")
+  hearts       Int    @default(5)
+  points       Int    @default(0)
+
+  activeCourse   Course? @relation(fields: [activeCourseId], references: [id])
+  activeCourseId String?
+
+  @@map("user_progress")
 }
