@@ -1,9 +1,9 @@
-import {Course} from "@prisma/client";
+import {Course, UserProgress} from "@prisma/client";
 import {Card} from "./card";
 
 type Props = {
   courses: Course[]
-  activeCourseId?: string
+  activeCourseId?: UserProgress['activeCourseId']
 }
 export const List = ({courses, activeCourseId}: Props) => {
   return (
