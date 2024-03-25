@@ -5,14 +5,16 @@ import {Unit} from "./unit";
 import {Promo} from "@/components/promo";
 import {Quests} from "@/components/quests";
 import {FeedWrapper} from "@/components/fead-wrapper";
-import {getUserProgress} from "@/lib/queries";
+import {getUnits, getUserProgress} from "@/lib/queries";
 import {redirect} from "next/navigation";
 
 const LearnPage = async () => {
   const [
-    userProgress
+    userProgress,
+    units,
   ] = await Promise.all([
-    getUserProgress()
+    getUserProgress(),
+    getUnits()
   ]);
   if (!userProgress || !userProgress.activeCourse) {
     redirect("/courses");
@@ -31,7 +33,16 @@ const LearnPage = async () => {
 
       <FeedWrapper>
         <Header title={userProgress.activeCourse.title}/>
-        <Unit/>
+        {
+          units.map(unit => (
+            <Unit
+              key={unit.id}
+              title={unit.title}
+              description={unit.description}
+              lessons={unit.lessons}
+            />
+          ))
+        }
       </FeedWrapper>
     </div>
   );

@@ -24,3 +24,27 @@ export const getCourses = cache(async () => {
 
   return data
 })
+
+export const getUnits = cache(async () => {
+  const {userId} = auth()
+
+  const userProgress = await getUserProgress()
+  if (!userId || !userProgress?.activeCourseId) {
+    return []
+  }
+
+  const data = await prisma.unit.findMany({
+    where: {
+      courseId: userProgress.activeCourseId,
+    },
+    include: {
+      lessons: {
+        orderBy: {
+          order: "asc",
+        }
+      },
+    }
+  })
+  
+  return data
+})

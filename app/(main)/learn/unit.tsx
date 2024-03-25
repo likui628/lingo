@@ -1,16 +1,31 @@
 import {UnitBanner} from "./unit-banner";
+import {Lesson} from "@prisma/client";
 import {LessonButton} from "./lesson-button";
 
-export const Unit = () => {
+type Props = {
+  title: string,
+  description: string,
+  lessons: Lesson[]
+}
+export const Unit = ({title, description, lessons}: Props) => {
   return (
     <>
-      <UnitBanner title="Unit 1" description="Learn the basics of Spanish"/>
+      <UnitBanner
+        title={title}
+        description={description}
+      />
       <div className="flex items-center flex-col relative">
-        <LessonButton/>
-        <LessonButton/>
-        <LessonButton/>
-        <LessonButton/>
-        <LessonButton/>
+        {
+          lessons.map((lesson, index) => (
+            <LessonButton
+              id={lesson.id}
+              index={index}
+              key={lesson.id}
+              title={lesson.title}
+              totalCount={lessons.length}
+            />
+          ))
+        }
       </div>
     </>
   )
