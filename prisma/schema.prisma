@@ -24,7 +24,7 @@ model Unit {
   description String
   order       Int
 
-  course   Course @relation(fields: [courseId], references: [id])
+  course   Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
   courseId String
 
   lessons Lesson[]
@@ -37,7 +37,7 @@ model Lesson {
   title String
   order Int
 
-  unit   Unit   @relation(fields: [unitId], references: [id])
+  unit   Unit   @relation(fields: [unitId], references: [id], onDelete: Cascade)
   unitId String
 
   challenges Challenge[]
@@ -51,7 +51,7 @@ model Challenge {
   type     ChallengeType
   order    Int
 
-  lesson   Lesson @relation(fields: [lessonId], references: [id])
+  lesson   Lesson @relation(fields: [lessonId], references: [id], onDelete: Cascade)
   lessonId String
 
   challengeOptions  ChallengeOption[]
@@ -72,7 +72,7 @@ model ChallengeOption {
   imageSrc String?
   audioSrc String?
 
-  challenge   Challenge @relation(fields: [challengeId], references: [id])
+  challenge   Challenge @relation(fields: [challengeId], references: [id], onDelete: Cascade)
   challengeId String
 
   @@map("challenge_options")
@@ -83,9 +83,11 @@ model challengeProgress {
   userId String
 
   challengeId String
-  challenge   Challenge @relation(fields: [challengeId], references: [id])
+  challenge   Challenge @relation(fields: [challengeId], references: [id], onDelete: Cascade)
 
   completed Boolean @default(false)
+
+  @@map("challenge_progress")
 }
 
 model UserProgress {
@@ -95,7 +97,7 @@ model UserProgress {
   hearts       Int    @default(5)
   points       Int    @default(0)
 
-  activeCourse   Course? @relation(fields: [activeCourseId], references: [id])
+  activeCourse   Course? @relation(fields: [activeCourseId], references: [id], onDelete: Cascade)
   activeCourseId String?
 
   @@map("user_progress")
