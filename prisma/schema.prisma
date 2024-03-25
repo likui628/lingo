@@ -54,7 +54,8 @@ model Challenge {
   lesson   Lesson @relation(fields: [lessonId], references: [id])
   lessonId String
 
-  challengeOptions ChallengeOption[]
+  challengeOptions  ChallengeOption[]
+  challengeProgress challengeProgress[]
 
   @@map("challenges")
 }
@@ -75,6 +76,16 @@ model ChallengeOption {
   challengeId String
 
   @@map("challenge_options")
+}
+
+model challengeProgress {
+  id     String @id @default(uuid())
+  userId String
+
+  challengeId String
+  challenge   Challenge @relation(fields: [challengeId], references: [id])
+
+  completed Boolean @default(false)
 }
 
 model UserProgress {
