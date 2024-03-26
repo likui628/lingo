@@ -6,8 +6,15 @@ type Props = {
   title: string,
   description: string,
   lessons: (Lesson & { completed: boolean })[]
+  activeLesson?: Lesson
 }
-export const Unit = ({title, description, lessons}: Props) => {
+export const Unit = (
+  {
+    title,
+    description,
+    lessons,
+    activeLesson
+  }: Props) => {
   return (
     <>
       <UnitBanner
@@ -16,17 +23,22 @@ export const Unit = ({title, description, lessons}: Props) => {
       />
       <div className="flex items-center flex-col relative">
         {
-          lessons.map((lesson, index) => (
-            <LessonButton
-              id={lesson.id}
-              index={index}
-              key={lesson.id}
-              title={lesson.title}
-              totalCount={lessons.length}
-              completed={lesson.completed}
-              percentage={0}
-            />
-          ))
+          lessons.map((lesson, index) => {
+            const isCurrent = lesson.id === activeLesson?.id
+            const isLocked = !lesson.completed && !isCurrent
+            return (
+              <LessonButton
+                id={lesson.id}
+                index={index}
+                key={lesson.id}
+                totalCount={lessons.length}
+                completed={lesson.completed}
+                current={isCurrent}
+                locked={isLocked}
+                percentage={0}
+              />
+            )
+          })
         }
       </div>
     </>

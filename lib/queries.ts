@@ -25,6 +25,62 @@ export const getCourses = cache(async () => {
   return data
 })
 
+export const getCourseProgress = cache(async () => {
+  const {userId} = auth()
+  const userProgress = await getUserProgress()
+  if (!userId || !userProgress?.activeCourseId) {
+    return null
+  }
+
+  const unitsInActiveCourse = await prisma.unit.findMany({
+    where: {
+      courseId: userProgress.activeCourseId
+    },
+    orderBy: {
+      order: "asc"
+    },
+    include: {
+      lessons: {
+        orderBy: {
+          order: "asc"
+        },
+        include: {
+          unit: true,
+          challenges: {
+            orderBy: {
+              order: "asc"
+            },
+            include: {
+              challengeProgress: {
+                where: {
+                  userId: userId
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  })
+
+  const firstUncompletedLesson = unitsInActiveCourse
+    .flatMap((unit) => unit.lessons)
+    .find(lesson => {
+      return lesson.challenges.some(challenge => {
+        return !challenge.challengeProgress
+          || challenge.challengeProgress.length == 0
+          || challenge.challengeProgress
+            .some(progress => progress.completed === false)
+      })
+    })
+
+
+  return {
+    activeLesson: firstUncompletedLesson,
+    activeLessonId: firstUncompletedLesson?.id,
+  }
+})
+
 export const getUnits = cache(async () => {
   const {userId} = auth()
 
@@ -63,7 +119,7 @@ export const getUnits = cache(async () => {
   const normalizedData = data.map((unit) => {
     const lessonsWithCompletedStatus: any[] = unit.lessons.map((lesson) => {
       if (lesson.challenges.length === 0) {
-        return {...lesson, completed: true}
+        return {...lesson, completed: false}
       }
 
       const completedStatus = lesson.challenges.every((challenge) => {

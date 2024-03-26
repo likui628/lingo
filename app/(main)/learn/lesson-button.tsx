@@ -12,10 +12,10 @@ type Props = {
   id: string
   index: number
   totalCount: number
-  title: string
   percentage: number
   completed: boolean
   current: boolean
+  locked: boolean
 }
 
 export const LessonButton = (
@@ -23,16 +23,14 @@ export const LessonButton = (
     id,
     index,
     totalCount,
-    title,
     percentage,
     completed,
+    locked,
     current,
   }: Props) => {
   const isFirst = index === 0;
   const isLast = index === totalCount - 1;
 
-  // !isCurrent && !isCompleted
-  const isLocked = index > 0;//TODO: replace with actual check
 
   const rightPosition = calculateRightPosition(index)
 
@@ -41,8 +39,8 @@ export const LessonButton = (
   return (
     <Link
       href={href}
-      aria-disabled={isLocked}
-      style={{pointerEvents: isLocked ? "none" : "auto"}}
+      aria-disabled={locked}
+      style={{pointerEvents: locked ? "none" : "auto"}}
     >
       <div
         className="relative mt-6"
@@ -76,7 +74,7 @@ export const LessonButton = (
                 <CustomButton
                   isCompleted={completed}
                   isLast={isLast}
-                  isLocked={isLocked}
+                  isLocked={locked}
                 />
               </CircularProgressbarWithChildren>
             </div>
@@ -84,7 +82,7 @@ export const LessonButton = (
             <CustomButton
               isCompleted={completed}
               isLast={isLast}
-              isLocked={isLocked}
+              isLocked={locked}
             />
           )
         }

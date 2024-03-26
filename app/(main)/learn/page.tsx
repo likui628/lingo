@@ -5,20 +5,28 @@ import {Unit} from "./unit";
 import {Promo} from "@/components/promo";
 import {Quests} from "@/components/quests";
 import {FeedWrapper} from "@/components/fead-wrapper";
-import {getUnits, getUserProgress} from "@/lib/queries";
+import {
+  getCourseProgress,
+  getUnits,
+  getUserProgress
+} from "@/lib/queries";
 import {redirect} from "next/navigation";
 
 const LearnPage = async () => {
   const [
     userProgress,
+    courseProgress,
     units,
   ] = await Promise.all([
     getUserProgress(),
+    getCourseProgress(),
     getUnits()
   ]);
-  if (!userProgress || !userProgress.activeCourse) {
+
+  if (!userProgress || !userProgress.activeCourse || !courseProgress) {
     redirect("/courses");
   }
+  
   return (
     <div className="flex flex-row-reverse gap-[48px] px-6">
       <StickyWrapper>
@@ -40,6 +48,7 @@ const LearnPage = async () => {
               title={unit.title}
               description={unit.description}
               lessons={unit.lessons}
+              activeLesson={courseProgress.activeLesson}
             />
           ))
         }
