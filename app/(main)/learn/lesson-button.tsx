@@ -20,16 +20,26 @@ export const LessonButton = ({id, index, totalCount, title, percentage}: Props) 
   const isFirst = index === 0;
   const isLast = index === totalCount - 1;
   const isCompleted = index == 0;//TODO: replace with actual check
-  
+
   const isLocked = index > 1;//TODO: replace with actual check
 
   const isCurrent = index === 1;//TODO: replace with actual check
 
+  const rightPosition = calculateRightPosition(index)
+
   return (
-    <Link href="/lesson" style={{
-      marginTop: isFirst && !isCompleted ? '60' : '24',
-    }}>
-      <div className="relative mt-6">
+    <Link
+      href="/lesson"
+      aria-disabled={isLocked}
+      style={{pointerEvents: isLocked ? "none" : "auto"}}
+    >
+      <div
+        className="relative mt-6"
+        style={{
+          marginTop: isFirst && !isCompleted ? '60' : '24',
+          right: `${rightPosition}px`
+        }}
+      >
         {
           isCurrent ? (
             <div className="w-[102px] h-[102px] relative">
@@ -95,4 +105,28 @@ const CustomButton = ({isLocked, isCompleted, isLast}: {
       />
     </Button>
   )
+}
+
+function calculateRightPosition(index: number) {
+  const cycleLength = 8;
+  const cycleIndex = index % cycleLength;
+
+  let indentationLevel;
+  switch (cycleIndex) {
+    case 0:
+    case 1:
+    case 2:
+      indentationLevel = cycleIndex;
+      break;
+    case 3:
+    case 4:
+    case 5:
+    case 6:
+      indentationLevel = 4 - cycleIndex;
+      break;
+    default:
+      indentationLevel = cycleIndex - 8;
+      break
+  }
+  return indentationLevel * 40;
 }
