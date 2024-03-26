@@ -135,3 +135,58 @@ export const getUnits = cache(async () => {
 
   return normalizedData
 })
+
+export const getLesson = cache(async (lessonId: string) => {
+  const {userId} = auth()
+  if (!userId) {
+    return null
+  }
+  const data = await prisma.lesson.findFirst({
+    where: {
+      id: lessonId
+    },
+    include: {
+      challenges: {
+        orderBy: {
+          order: "asc"
+        },
+        include: {
+          challengeProgress: {
+            where: {
+              userId
+            }
+          }
+        }
+      }
+    }
+  })
+  if (!data || !data.challenges) {
+    return null
+  }
+
+  const normalizedChallenges = data.challenges.map(lesson => {
+    const completedStatus = lesson.challengeProgress
+      && lesson.challengeProgress.length > 0
+      && lesson.challengeProgress.every(progress => progress.completed)
+    return {
+      ...lesson,
+      completed: completedStatus,
+    }
+  })
+  return {...data, challenges: normalizedChallenges};
+})
+
+export const getLessonProgress = cache(async () => {
+  const courseProgress = await getCourseProgress()
+  if (!courseProgress?.activeLessonId) {
+    return 0;
+  }
+
+  const lesson = await getLesson(courseProgress.activeLessonId);
+  if (!lesson) {
+    return 0;
+  }
+
+  const completedChallenges = lesson.challenges.filter(challenge => challenge.completed)
+  return Math.round(completedChallenges.length / lesson.challenges.length * 100)
+})

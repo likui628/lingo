@@ -6,7 +6,7 @@ import {Promo} from "@/components/promo";
 import {Quests} from "@/components/quests";
 import {FeedWrapper} from "@/components/fead-wrapper";
 import {
-  getCourseProgress,
+  getCourseProgress, getLessonProgress,
   getUnits,
   getUserProgress
 } from "@/lib/queries";
@@ -17,16 +17,18 @@ const LearnPage = async () => {
     userProgress,
     courseProgress,
     units,
+    lessonPercentage,
   ] = await Promise.all([
     getUserProgress(),
     getCourseProgress(),
-    getUnits()
+    getUnits(),
+    getLessonProgress()
   ]);
 
   if (!userProgress || !userProgress.activeCourse || !courseProgress) {
     redirect("/courses");
   }
-  
+
   return (
     <div className="flex flex-row-reverse gap-[48px] px-6">
       <StickyWrapper>
@@ -49,6 +51,7 @@ const LearnPage = async () => {
               description={unit.description}
               lessons={unit.lessons}
               activeLesson={courseProgress.activeLesson}
+              activeLessonPercentage={lessonPercentage}
             />
           ))
         }

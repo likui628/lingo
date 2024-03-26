@@ -7,13 +7,15 @@ type Props = {
   description: string,
   lessons: (Lesson & { completed: boolean })[]
   activeLesson?: Lesson
+  activeLessonPercentage?: number
 }
 export const Unit = (
   {
     title,
     description,
     lessons,
-    activeLesson
+    activeLesson,
+    activeLessonPercentage,
   }: Props) => {
   return (
     <>
@@ -35,7 +37,7 @@ export const Unit = (
                 completed={lesson.completed}
                 current={isCurrent}
                 locked={isLocked}
-                percentage={0}
+                percentage={activeLessonPercentage || 0}
               />
             )
           })
