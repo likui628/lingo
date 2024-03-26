@@ -5,7 +5,7 @@ import {LessonButton} from "./lesson-button";
 type Props = {
   title: string,
   description: string,
-  lessons: Lesson[]
+  lessons: (Lesson & { completed: boolean })[]
 }
 export const Unit = ({title, description, lessons}: Props) => {
   return (
@@ -23,6 +23,8 @@ export const Unit = ({title, description, lessons}: Props) => {
               key={lesson.id}
               title={lesson.title}
               totalCount={lessons.length}
+              completed={lesson.completed}
+              percentage={0}
             />
           ))
         }

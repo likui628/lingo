@@ -41,10 +41,41 @@ export const getUnits = cache(async () => {
       lessons: {
         orderBy: {
           order: "asc",
+        },
+        include: {
+          challenges: {
+            orderBy: {
+              order: "asc",
+            },
+            include: {
+              challengeProgress: {
+                where: {
+                  userId: userId
+                }
+              }
+            }
+          }
         }
       },
     }
   })
-  
-  return data
+
+  const normalizedData = data.map((unit) => {
+    const lessonsWithCompletedStatus: any[] = unit.lessons.map((lesson) => {
+      if (lesson.challenges.length === 0) {
+        return {...lesson, completed: true}
+      }
+
+      const completedStatus = lesson.challenges.every((challenge) => {
+        return challenge.challengeProgress
+          && challenge.challengeProgress.length > 0
+          && challenge.challengeProgress.every((progress) => progress.completed)
+      })
+      return {...lesson, completed: completedStatus}
+    })
+
+    return {...unit, lessons: lessonsWithCompletedStatus}
+  });
+
+  return normalizedData
 })

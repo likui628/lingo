@@ -14,34 +14,45 @@ type Props = {
   totalCount: number
   title: string
   percentage: number
+  completed: boolean
+  current: boolean
 }
 
-export const LessonButton = ({id, index, totalCount, title, percentage}: Props) => {
+export const LessonButton = (
+  {
+    id,
+    index,
+    totalCount,
+    title,
+    percentage,
+    completed,
+    current,
+  }: Props) => {
   const isFirst = index === 0;
   const isLast = index === totalCount - 1;
-  const isCompleted = index == 0;//TODO: replace with actual check
 
-  const isLocked = index > 1;//TODO: replace with actual check
-
-  const isCurrent = index === 1;//TODO: replace with actual check
+  // !isCurrent && !isCompleted
+  const isLocked = index > 0;//TODO: replace with actual check
 
   const rightPosition = calculateRightPosition(index)
 
+  const href = completed ? `/lesson/${id}` : "/lesson";
+
   return (
     <Link
-      href="/lesson"
+      href={href}
       aria-disabled={isLocked}
       style={{pointerEvents: isLocked ? "none" : "auto"}}
     >
       <div
         className="relative mt-6"
         style={{
-          marginTop: isFirst && !isCompleted ? '60' : '24',
+          marginTop: isFirst && !completed ? '60' : '24',
           right: `${rightPosition}px`
         }}
       >
         {
-          isCurrent ? (
+          current ? (
             <div className="w-[102px] h-[102px] relative">
               <div
                 className="absolute -top-6 left-2.5 px-3 py-2.5 border-2 font-bold uppercase text-green-500 bg-white rounded-xl tracking-wide z-10 animate-bounce"
@@ -63,7 +74,7 @@ export const LessonButton = ({id, index, totalCount, title, percentage}: Props) 
                 }}
               >
                 <CustomButton
-                  isCompleted={isCompleted}
+                  isCompleted={completed}
                   isLast={isLast}
                   isLocked={isLocked}
                 />
@@ -71,7 +82,7 @@ export const LessonButton = ({id, index, totalCount, title, percentage}: Props) 
             </div>
           ) : (
             <CustomButton
-              isCompleted={isCompleted}
+              isCompleted={completed}
               isLast={isLast}
               isLocked={isLocked}
             />
