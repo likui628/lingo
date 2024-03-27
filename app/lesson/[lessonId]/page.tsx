@@ -1,8 +1,8 @@
-import {Quiz} from "./quiz";
-
 const LessonPage = () => {
   return (
-    <Quiz/>
+    <div className="">
+      lessonId
+    </div>
   );
 }
 
