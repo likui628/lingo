@@ -99,7 +99,7 @@ const CustomButton = ({isLocked, isCompleted, isLast}: {
   const Icon = isCompleted ? Check : isLast ? Crown : Star;
   return (
     <Button
-      size="rouded"
+      size="rounded"
       variant={isLocked ? 'locked' : 'secondary'}
       className="rounded-full border-b-8 h-[70px] w-[70px]"
     >
