@@ -1,12 +1,23 @@
 import {Header} from "./header";
 import {Footer} from "./footer";
-import Image from "next/image";
 import {Card} from "@/app/lesson/card";
 
-export const Quiz = () => {
+type Props = {
+  initialPercentage: number;
+  initialHearts: number;
+}
+
+export const Quiz = (
+  {
+    initialPercentage,
+    initialHearts
+  }: Props) => {
   return (
     <>
-      <Header hearts={5} percentage={33}/>
+      <Header
+        hearts={initialHearts}
+        percentage={initialPercentage}
+      />
       <div className="flex-1">
         <div className="h-full flex items-center justify-center">
           <div className="w-full lg:w-[600px] min-[350px] flex flex-col gap-y-12">

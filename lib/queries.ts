@@ -136,11 +136,21 @@ export const getUnits = cache(async () => {
   return normalizedData
 })
 
-export const getLesson = cache(async (lessonId: string) => {
+export const getLesson = cache(async (id?: string) => {
   const {userId} = auth()
   if (!userId) {
     return null
   }
+
+  let lessonId = id;
+  if (!lessonId) {
+    const courseProgress = await getCourseProgress()
+    lessonId = courseProgress?.activeLessonId
+  }
+  if (!lessonId) {
+    return null
+  }
+
   const data = await prisma.lesson.findFirst({
     where: {
       id: lessonId
@@ -151,6 +161,7 @@ export const getLesson = cache(async (lessonId: string) => {
           order: "asc"
         },
         include: {
+          challengeOptions: true,
           challengeProgress: {
             where: {
               userId
