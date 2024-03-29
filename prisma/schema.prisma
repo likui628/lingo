@@ -55,7 +55,7 @@ model Challenge {
   lessonId String
 
   challengeOptions  ChallengeOption[]
-  challengeProgress challengeProgress[]
+  challengeProgress ChallengeProgress[]
 
   @@map("challenges")
 }
@@ -78,7 +78,7 @@ model ChallengeOption {
   @@map("challenge_options")
 }
 
-model challengeProgress {
+model ChallengeProgress {
   id     String @id @default(uuid())
   userId String
 
