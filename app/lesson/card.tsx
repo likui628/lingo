@@ -28,7 +28,8 @@ export const Card = (
         cn("h-full p-4 cursor-pointer rounded-xl border-2 border-b-4",
           selected && "border-sky-300 bg-sky-100 hover:bg-sky-100",
           selected && status === "correct" && "border-green-300 bg-green-100 hover:bg-green-100",
-          selected && status === "wrong" && "border-rose-300 bg-rose-100 hover:bg-rose-100"
+          selected && status === "wrong" && "border-rose-300 bg-rose-100 hover:bg-rose-100",
+          type === "ASSIST" && "lg:p-3 w-full"
         )}
       onClick={onClick}
     >
@@ -39,7 +40,10 @@ export const Card = (
           </div>
         )
       }
-      <div className="flex items-center justify-between text-neutral-600">
+      <div className={cn("flex items-center justify-between text-neutral-600",
+        type === "ASSIST" && "flex-row-reverse"
+      )}>
+        {type === "ASSIST" && <div/>}
         <p className={cn(
           "text-neutral-600 text-sm lg:text-base",
           selected && "text-sky-500",

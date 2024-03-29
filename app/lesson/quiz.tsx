@@ -10,6 +10,7 @@ import {
   Challenge,
 } from "@prisma/client";
 import {Challenge as ChallengeComp} from "./challenge";
+import {QuestionBubble} from "./question-bubble";
 
 type Props = {
   initialPercentage: number;
@@ -30,7 +31,7 @@ export const Quiz = (
 
   const [status, setStatus] = useState<ChallengeStatus>("none")
 
-  const challenge = initialChallenges[0]
+  const challenge = initialChallenges[1]
   const options = challenge.challengeOptions
 
   const [selectedOptionId, setSelectedOptionId] = useState<string>()
@@ -50,9 +51,16 @@ export const Quiz = (
         <div className="h-full flex items-center justify-center">
           <div className="w-full lg:w-[600px] min-[350px] flex flex-col gap-y-12">
             <h1 className="text-lg lg:text-3xl text-center lg:text-start font-bold text-neutral-700">
-              {challenge.question}
+              {
+                challenge.type === "ASSIST"
+                  ? "Select the correct meaning"
+                  : challenge.question
+              }
             </h1>
             <div>
+              {challenge.type === "ASSIST" && (
+                <QuestionBubble question={challenge.question}/>
+              )}
               <ChallengeComp
                 status={status}
                 options={options}
