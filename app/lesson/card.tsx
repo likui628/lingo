@@ -1,8 +1,7 @@
-"use client"
-
 import Image from "next/image";
-import {ChallengeStatus} from "@/app/lesson/typing";
+import {ChallengeStatus} from "./typing";
 import {cn} from "@/lib/utils";
+import {ChallengeType} from "@prisma/client";
 
 type Props = {
   text: string
@@ -11,6 +10,7 @@ type Props = {
   selected: boolean
   status: ChallengeStatus
   onClick: () => void
+  type: ChallengeType
 }
 export const Card = (
   {
@@ -19,7 +19,8 @@ export const Card = (
     shortcut,
     selected,
     status,
-    onClick
+    onClick,
+    type,
   }: Props) => {
   return (
     <div

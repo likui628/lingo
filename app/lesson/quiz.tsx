@@ -56,7 +56,8 @@ export const Quiz = (
               <ChallengeComp
                 status={status}
                 options={options}
-                onClick={onSelect}
+                onSelect={onSelect}
+                type={challenge.type}
                 selectedOption={selectedOptionId}
               />
             </div>
