@@ -1,0 +1,1 @@
+export type ChallengeStatus = "correct" | "wrong" | "none"
