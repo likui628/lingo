@@ -32,7 +32,7 @@ export const Challenge = (
             imageSrc={option.imageSrc}
             audioSrc={option.audioSrc}
             text={option.text}
-            shortcut={index + 1}
+            shortcut={`${index + 1}`}
             type={type}
             onClick={() => onSelect(option.id)}
           />

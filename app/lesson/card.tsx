@@ -2,14 +2,14 @@ import Image from "next/image";
 import {ChallengeStatus} from "./typing";
 import {cn} from "@/lib/utils";
 import {ChallengeType} from "@prisma/client";
-import {useAudio} from "react-use";
+import {useAudio, useKey} from "react-use";
 import {useCallback} from "react";
 
 type Props = {
   text: string
   imageSrc: string | null
   audioSrc: string | null
-  shortcut: number
+  shortcut: string
   selected: boolean
   status: ChallengeStatus
   onClick: () => void
@@ -32,6 +32,8 @@ export const Card = (
     controls.play()
     onClick()
   }, [onClick, controls])
+
+  useKey(shortcut, handleClick, {}, [handleClick])
 
   return (
     <>
