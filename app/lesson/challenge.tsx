@@ -30,6 +30,7 @@ export const Challenge = (
             selected={selectedOption === option.id}
             status={status}
             imageSrc={option.imageSrc}
+            audioSrc={option.audioSrc}
             text={option.text}
             shortcut={index + 1}
             type={type}
