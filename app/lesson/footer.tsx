@@ -5,8 +5,10 @@ import {cn} from "@/lib/utils";
 
 type Props = {
   status: ChallengeStatus
+  onCheck: () => void
+  disabled: boolean
 }
-export const Footer = ({status}: Props) => {
+export const Footer = ({status, onCheck, disabled}: Props) => {
   return (
     <div className={cn("lg:-h[140px] h-[100px] border-t-2",
       status === "correct" && "border-transparent bg-green-100",
@@ -37,9 +39,11 @@ export const Footer = ({status}: Props) => {
           }
         </div>
         <Button
+          disabled={disabled}
           variant={status === 'wrong' ? 'danger' : 'secondary'}
           size="lg"
           className="ml-auto"
+          onClick={onCheck}
         >
           {status === "none" && "Check"}
           {status === "correct" && "Next"}
