@@ -1,1 +1,1 @@
-export type ChallengeStatus = "correct" | "wrong" | "none"
+export type ChallengeStatus = "correct" | "wrong" | "none" | "completed"

@@ -6,9 +6,16 @@ import {cn} from "@/lib/utils";
 type Props = {
   status: ChallengeStatus
   onCheck: () => void
-  disabled: boolean
+  disabled?: boolean
+  lessonId?: string
 }
-export const Footer = ({status, onCheck, disabled}: Props) => {
+export const Footer = (
+  {
+    status,
+    onCheck,
+    disabled,
+    lessonId
+  }: Props) => {
   return (
     <div className={cn("lg:-h[140px] h-[100px] border-t-2",
       status === "correct" && "border-transparent bg-green-100",
@@ -37,6 +44,15 @@ export const Footer = ({status, onCheck, disabled}: Props) => {
               Try again.
             </>
           }
+          {
+            status === 'completed' &&
+            <>
+              <Button
+                size="lg"
+                onClick={() => window.location.href = `/lesson/${lessonId}`}
+              > Practice again</Button>
+            </>
+          }
         </div>
         <Button
           disabled={disabled}
@@ -48,10 +64,9 @@ export const Footer = ({status, onCheck, disabled}: Props) => {
           {status === "none" && "Check"}
           {status === "correct" && "Next"}
           {status === "wrong" && "Retry"}
+          {status === "completed" && "Continue"}
         </Button>
       </div>
-
-
     </div>
   )
 }
