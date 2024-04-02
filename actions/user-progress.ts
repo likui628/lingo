@@ -51,6 +51,13 @@ export const reduceHearts = async (challengeId: string) => {
     throw new Error("Unauthorized")
   }
 
+  const challenge = await prisma.challenge.findUnique({
+    where: {id: challengeId}
+  })
+  if (!challenge) {
+    throw new Error("Challenge not found")
+  }
+
   const userProgress = await getUserProgress()
   if (!userProgress) {
     throw new Error("User progress not found")
@@ -72,4 +79,9 @@ export const reduceHearts = async (challengeId: string) => {
       }
     }
   })
+
+  const lessonId = challenge.lessonId
+  
+  revalidatePath("/learn");
+  revalidatePath(`/lesson/${lessonId}`);
 }

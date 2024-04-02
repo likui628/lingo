@@ -2,6 +2,7 @@
 
 import {auth} from "@clerk/nextjs";
 import {prisma} from "@/lib/db";
+import {revalidatePath} from "next/cache";
 
 export const upsertChallengeProgress = async (challengeId: string) => {
   const {userId} = auth();
@@ -66,6 +67,11 @@ export const upsertChallengeProgress = async (challengeId: string) => {
     },
     data
   })
+
+  const lessonId = challenge.lessonId
+  revalidatePath("/learn");
+  revalidatePath("/lesson");
+  revalidatePath(`/lesson/${lessonId}`);
 
   return data
 }
