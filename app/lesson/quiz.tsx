@@ -78,19 +78,25 @@ export const Quiz = (
     const isCorrect = correctOption?.id === selectedOptionId
     if (isCorrect) {
       startTransition(() => {
-        setStatus("correct")
-        correctControls.play()
         upsertChallengeProgress(challenge.id)
           .then((response) => {
-            // TODO update hearts and percentage
-            console.log(response)
+            if ("error" in response) {
+              if (response.error === "hearts") {
+                //TODO open hearts modal
+                return
+              }
+            } else {
+              setStatus("correct")
+              correctControls.play()
+              setHearts(response.hearts)
+              setPercent((prev) => prev + 100 / initialChallenges.length)
+            }
           })
           .catch(() => toast.error("Something went wrong. Please try again."))
       })
 
     } else {
       startTransition(() => {
-
         reduceHearts(challenge.id)
           .then((response) => {
             if (response?.error === "hearts") {
