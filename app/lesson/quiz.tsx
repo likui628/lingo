@@ -13,6 +13,9 @@ import {Challenge as ChallengeComp} from "./challenge";
 import {QuestionBubble} from "./question-bubble";
 import {useAudio} from "react-use";
 import {ChallengeResult} from "./challenge-result";
+import {upsertChallengeProgress} from "@/actions/challenge-progress";
+import {toast} from "sonner";
+import {reduceHearts} from "@/actions/user-progress";
 
 type Props = {
   initialPercentage: number;
@@ -30,6 +33,9 @@ export const Quiz = (
     initialHearts,
     initialChallenges,
   }: Props) => {
+  const [percent, setPercent] = useState(() => initialPercentage === 100 ? 0 : initialPercentage)
+  const [hearts, setHearts] = useState(initialHearts)
+
   const [status, setStatus] = useState<ChallengeStatus>("none")
 
   const [activeIndex, setActiveIndex] = useState(() => {
@@ -41,7 +47,6 @@ export const Quiz = (
   const correctOption = options.find(option => option.correct)
 
   const [selectedOptionId, setSelectedOptionId] = useState<string>()
-
 
   const [isPending, startTransition] = useTransition()
   const [correct, _c, correctControls] = useAudio({src: "/correct.wav", autoPlay: false})
@@ -70,19 +75,35 @@ export const Quiz = (
       return
     }
 
-    // TODO
-    if (correctOption?.id === selectedOptionId) {
-      setStatus("correct")
-      correctControls.play()
+    const isCorrect = correctOption?.id === selectedOptionId
+    if (isCorrect) {
+      startTransition(() => {
+        setStatus("correct")
+        correctControls.play()
+        upsertChallengeProgress(challenge.id)
+          .then((response) => {
+            // TODO update hearts and percentage
+            console.log(response)
+          })
+          .catch(() => toast.error("Something went wrong. Please try again."))
+      })
+
     } else {
-      setStatus("wrong")
-      incorrectControls.play()
-      // TODO: update hearts
+      startTransition(() => {
+
+        reduceHearts(challenge.id)
+          .then((response) => {
+            if (response?.error === "hearts") {
+              //TODO open hearts modal
+              return
+            }
+            setStatus("wrong")
+            incorrectControls.play()
+            setHearts((prev) => Math.max(prev - 1, 0))
+          })
+          .catch(() => toast.error("Something went wrong. Please try again."))
+      })
     }
-
-    //todo update UserProgress
-
-    //todo update ChallengeProgress
   }
   if (!challenge) {
     return (
@@ -96,8 +117,8 @@ export const Quiz = (
   return (
     <>
       <Header
-        hearts={initialHearts}
-        percentage={initialPercentage}
+        hearts={hearts}
+        percentage={percent}
       />
       <div className="flex-1">
         <div className="h-full flex items-center justify-center">

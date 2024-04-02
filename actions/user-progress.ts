@@ -4,6 +4,7 @@ import {auth, currentUser} from "@clerk/nextjs";
 import {prisma} from "@/lib/db";
 import {redirect} from "next/navigation";
 import {revalidatePath} from "next/cache";
+import {getUserProgress} from "@/lib/queries";
 
 export const upsertUserProgress = async (courseId: string) => {
   const {userId} = auth();
@@ -40,6 +41,35 @@ export const upsertUserProgress = async (courseId: string) => {
 
   revalidatePath("/courses")
   revalidatePath("/learn")
-  
+
   redirect("/learn")
+}
+
+export const reduceHearts = async (challengeId: string) => {
+  const {userId} = auth();
+  if (!userId) {
+    throw new Error("Unauthorized")
+  }
+
+  const userProgress = await getUserProgress()
+  if (!userProgress) {
+    throw new Error("User progress not found")
+  }
+
+  if (userProgress.hearts === 0) {
+    return {
+      error: "hearts"
+    }
+  }
+
+  await prisma.userProgress.update({
+    where: {
+      userId,
+    },
+    data: {
+      hearts: {
+        set: Math.max(userProgress.hearts - 1, 0)
+      }
+    }
+  })
 }
