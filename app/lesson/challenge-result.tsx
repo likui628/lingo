@@ -8,11 +8,15 @@ import Confetti from "react-confetti";
 type Props = {
   status: ChallengeStatus
   onContinue: () => void
+  hearts: number
+  points: number
 }
 export const ChallengeResult = (
   {
     status,
-    onContinue
+    onContinue,
+    hearts,
+    points,
   }: Props) => {
   const [audio] = useAudio({src: "/finish.mp3", autoPlay: true})
 
@@ -35,8 +39,8 @@ export const ChallengeResult = (
         Great job!<br/>You&apos;ve completed the lesson.
       </h1>
       <div className="flex items-center gap-x-4 w-full">
-        <ResultCard variant="points" value={30}/>
-        <ResultCard variant="hearts" value={5}/>
+        <ResultCard variant="points" value={points}/>
+        <ResultCard variant="hearts" value={hearts}/>
       </div>
     </div>
     <Footer

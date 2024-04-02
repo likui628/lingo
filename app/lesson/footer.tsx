@@ -45,13 +45,14 @@ export const Footer = (
             </>
           }
           {
-            status === 'completed' &&
-            <>
+            status === 'completed' && (
               <Button
                 size="lg"
                 onClick={() => window.location.href = `/lesson/${lessonId}`}
-              > Practice again</Button>
-            </>
+              >
+                Practice again
+              </Button>
+            )
           }
         </div>
         <Button

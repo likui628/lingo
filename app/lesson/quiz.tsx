@@ -16,6 +16,7 @@ import {ChallengeResult} from "./challenge-result";
 import {upsertChallengeProgress} from "@/actions/challenge-progress";
 import {toast} from "sonner";
 import {reduceHearts} from "@/actions/user-progress";
+import {useRouter} from "next/navigation";
 
 type Props = {
   initialPercentage: number;
@@ -51,6 +52,8 @@ export const Quiz = (
   const [isPending, startTransition] = useTransition()
   const [correct, _c, correctControls] = useAudio({src: "/correct.wav", autoPlay: false})
   const [incorrect, _ic, incorrectControls] = useAudio({src: "/incorrect.wav", autoPlay: false})
+
+  const router = useRouter();
 
   const onSelect = (id: string) => {
     if (status !== 'none') {
@@ -114,8 +117,10 @@ export const Quiz = (
   if (!challenge) {
     return (
       <ChallengeResult
-        status={status}
-        onContinue={onContinue}
+        status={"completed"}
+        onContinue={() => router.push("/learn")}
+        hearts={hearts}
+        points={initialChallenges.length * 10}
       />
     )
   }
