@@ -87,6 +87,7 @@ model ChallengeProgress {
 
   completed Boolean @default(false)
 
+  @@unique([userId, challengeId])
   @@map("challenge_progress")
 }
 
