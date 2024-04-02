@@ -17,6 +17,7 @@ import {upsertChallengeProgress} from "@/actions/challenge-progress";
 import {toast} from "sonner";
 import {reduceHearts} from "@/actions/user-progress";
 import {useRouter} from "next/navigation";
+import {useHeartsModal} from "@/stores/use-hearts-modal";
 
 type Props = {
   initialPercentage: number;
@@ -55,6 +56,8 @@ export const Quiz = (
 
   const router = useRouter();
 
+  const {openModal: openHeartsModal} = useHeartsModal();
+
   const onSelect = (id: string) => {
     if (status !== 'none') {
       return
@@ -85,7 +88,7 @@ export const Quiz = (
           .then((response) => {
             if ("error" in response) {
               if (response.error === "hearts") {
-                //TODO open hearts modal
+                openHeartsModal()
                 return
               }
             } else {
@@ -103,7 +106,7 @@ export const Quiz = (
         reduceHearts(challenge.id)
           .then((response) => {
             if (response?.error === "hearts") {
-              //TODO open hearts modal
+              openHeartsModal()
               return
             }
             setStatus("wrong")

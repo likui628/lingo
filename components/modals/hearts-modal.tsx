@@ -1,0 +1,55 @@
+"use client"
+
+import {
+  Dialog,
+  DialogContent,
+} from "@/components/ui/dialog"
+import {useEffect, useState} from "react";
+import {useHeartsModal} from "@/stores/use-hearts-modal";
+import {Button} from "@/components/ui/button";
+import Image from "next/image";
+import {useRouter} from "next/navigation";
+
+export const HeartsModal = () => {
+  const {isOpen, closeModal} = useHeartsModal()
+
+  const [isClient, setIsClient] = useState(false)
+  useEffect(() => setIsClient(true), [])
+
+  const router = useRouter();
+  const onClick = () => {
+    closeModal();
+    router.push("/store");
+  };
+
+  if (!isClient) {
+    return null
+  }
+
+  return (
+    <Dialog open={isOpen} onOpenChange={closeModal}>
+      <DialogContent className="max-w-md">
+        <div className="text-center flex flex-col items-center">
+          <Image className="mb-6" src="/mascot_bad.svg" width={70} height={70} alt="mascot_bad"/>
+          <h1 className="text-2xl font-bold">You ran out of hearts!</h1>
+          <p className="text-neutral-500">Get Pro for unlimited hearts, or purchase them in the store.</p>
+        </div>
+        <Button
+          variant="primary"
+          onClick={onClick}
+        >
+          Get unlimited hearts
+        </Button>
+        <Button
+          variant="primaryOutline"
+          className="w-full"
+          size="lg"
+          onClick={closeModal}
+        >
+          No thanks
+        </Button>
+      </DialogContent>
+    </Dialog>
+
+  )
+}
