@@ -20,8 +20,9 @@ import {useRouter} from "next/navigation";
 import {useHeartsModal} from "@/stores/use-hearts-modal";
 
 type Props = {
-  initialPercentage: number;
-  initialHearts: number;
+  lessonId: string
+  initialPercentage: number
+  initialHearts: number
   initialChallenges: (Challenge & {
     completed: boolean,
     challengeOptions: ChallengeOption[],
@@ -31,6 +32,7 @@ type Props = {
 
 export const Quiz = (
   {
+    lessonId,
     initialPercentage,
     initialHearts,
     initialChallenges,
@@ -122,6 +124,7 @@ export const Quiz = (
   if (!challenge) {
     return (
       <ChallengeResult
+        lessonId={lessonId}
         status={"completed"}
         onContinue={() => router.push("/learn")}
         hearts={hearts}

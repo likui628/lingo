@@ -10,6 +10,7 @@ type Props = {
   onContinue: () => void
   hearts: number
   points: number
+  lessonId: string
 }
 export const ChallengeResult = (
   {
@@ -17,6 +18,7 @@ export const ChallengeResult = (
     onContinue,
     hearts,
     points,
+    lessonId,
   }: Props) => {
   const [audio] = useAudio({src: "/finish.mp3", autoPlay: true})
 
@@ -44,6 +46,7 @@ export const ChallengeResult = (
       </div>
     </div>
     <Footer
+      lessonId={lessonId}
       status={status}
       onCheck={onContinue}
     />
