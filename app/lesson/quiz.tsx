@@ -44,8 +44,9 @@ export const Quiz = (
     const uncompletedIndex = initialChallenges.findIndex(challenge => !challenge.completed)
     return uncompletedIndex === -1 ? 0 : uncompletedIndex
   })
-  const challenge = initialChallenges[activeIndex]
-  const options = challenge?.challengeOptions || []
+  const [challenges] = useState(initialChallenges)
+  const challenge = challenges[activeIndex]
+  const options = challenge?.challengeOptions ?? []
   const correctOption = options.find(option => option.correct)
 
   const [selectedOptionId, setSelectedOptionId] = useState<string>()
@@ -117,6 +118,7 @@ export const Quiz = (
       })
     }
   }
+
   if (!challenge) {
     return (
       <ChallengeResult
