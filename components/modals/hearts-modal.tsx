@@ -3,6 +3,10 @@
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
 } from "@/components/ui/dialog"
 import {useEffect, useState} from "react";
 import {useHeartsModal} from "@/stores/use-hearts-modal";
@@ -29,25 +33,40 @@ export const HeartsModal = () => {
   return (
     <Dialog open={isOpen} onOpenChange={closeModal}>
       <DialogContent className="max-w-md">
-        <div className="text-center flex flex-col items-center">
-          <Image className="mb-6" src="/mascot_bad.svg" width={70} height={70} alt="mascot_bad"/>
-          <h1 className="text-2xl font-bold">You ran out of hearts!</h1>
-          <p className="text-neutral-500">Get Pro for unlimited hearts, or purchase them in the store.</p>
-        </div>
-        <Button
-          variant="primary"
-          onClick={onClick}
-        >
-          Get unlimited hearts
-        </Button>
-        <Button
-          variant="primaryOutline"
-          className="w-full"
-          size="lg"
-          onClick={closeModal}
-        >
-          No thanks
-        </Button>
+        <DialogHeader>
+          <div className="flex items-center w-full justify-center mb-5">
+            <Image
+              src="/mascot_bad.svg"
+              width={70}
+              height={70}
+              alt="mascot_bad"
+            />
+          </div>
+          <DialogTitle className="text-center text-2xl font-bold">
+            You ran out of hearts!
+          </DialogTitle>
+          <DialogDescription className="text-center text-base">
+            Get Pro for unlimited hearts, or purchase them in the store.
+          </DialogDescription>
+        </DialogHeader>
+        <DialogFooter>
+          <div className="flex flex-col gap-y-4 w-full">
+            <Button
+              variant="primary"
+              onClick={onClick}
+            >
+              Get unlimited hearts
+            </Button>
+            <Button
+              variant="primaryOutline"
+              className="w-full"
+              size="lg"
+              onClick={closeModal}
+            >
+              No thanks
+            </Button>
+          </div>
+        </DialogFooter>
       </DialogContent>
     </Dialog>
 
