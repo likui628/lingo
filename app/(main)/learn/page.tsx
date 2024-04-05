@@ -38,7 +38,7 @@ const LearnPage = async () => {
           points={userProgress.points}
         />
         <Promo/>
-        <Quests/>
+        <Quests points={userProgress.points}/>
       </StickyWrapper>
 
       <FeedWrapper>
