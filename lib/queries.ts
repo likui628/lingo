@@ -201,3 +201,11 @@ export const getLessonProgress = cache(async () => {
   const completedChallenges = lesson.challenges.filter(challenge => challenge.completed)
   return Math.round(completedChallenges.length / lesson.challenges.length * 100)
 })
+
+export const getLeaderboard = cache(async () => {
+  const data = await prisma.userProgress.findMany({
+    orderBy: {points: "desc"},
+    take: 10,
+  })
+  return data
+})
