@@ -9,7 +9,7 @@ import {
 } from "@/lib/queries";
 import {redirect} from "next/navigation";
 import Image from "next/image";
-import {Button} from "@/components/ui/button";
+import {Items} from "./items";
 
 const ShopPage = async () => {
   const [
@@ -24,7 +24,6 @@ const ShopPage = async () => {
     redirect("/courses");
   }
 
-  // todo refill hearts
   return (
     <div className="flex flex-row-reverse gap-[48px] px-6">
       <StickyWrapper>
@@ -56,36 +55,10 @@ const ShopPage = async () => {
             Spend your points on cool stuff.
           </span>
         </div>
-        <div className="w-full">
-          <div
-            className="flex items-center w-full p-4 gap-x-4 border-t-2"
-          >
-            <Image
-              src="/heart.svg"
-              alt="heart"
-              width={60}
-              height={60}
-            />
-            <span className="font-bold text-xl flex-1">
-              Refill hearts
-            </span>
-            <Button>Full</Button>
-          </div>
-          <div
-            className="flex items-center w-full p-4 gap-x-4 border-t-2"
-          >
-            <Image
-              src="/unlimited.svg"
-              alt="unlimited"
-              width={60}
-              height={60}
-            />
-            <span className="font-bold text-xl flex-1">
-              Unlimited hearts
-            </span>
-            <Button disabled={true}>Upgrade</Button>
-          </div>
-        </div>
+        <Items
+          hearts={userProgress.hearts}
+          points={userProgress.points}
+        />
       </FeedWrapper>
     </div>
   );
