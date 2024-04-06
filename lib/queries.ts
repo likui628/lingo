@@ -209,3 +209,17 @@ export const getLeaderboard = cache(async () => {
   })
   return data
 })
+
+export const isAdmin = async () => {
+  const {userId} = auth()
+  if (!userId) {
+    return false
+  }
+
+  const admin = await prisma.admin.findUnique({
+    where: {
+      userId
+    }
+  })
+  return !!admin
+}

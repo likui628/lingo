@@ -103,3 +103,10 @@ model UserProgress {
 
   @@map("user_progress")
 }
+
+model Admin {
+  id     String @id @default(uuid())
+  userId String @unique
+
+  @@map("admins")
+}
