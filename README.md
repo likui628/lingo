@@ -13,7 +13,7 @@
 - React.js
 - Tailwind CSS
 - Next.js
-- Express.js
+- Prisma
 
 ## Getting Started
 
