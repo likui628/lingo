@@ -9,6 +9,8 @@ import {ChallengeList} from "./challenge/challenge-list";
 import {ChallengeOptionList} from "./challenge-option/challenge-option-list";
 import {CourseEdit} from "./course/course-edit";
 import {CourseCreate} from "./course/course-create";
+import {UnitEdit} from "./unit/unit-edit";
+import {UnitCreate} from "./unit/unit-create";
 
 const dataProvider = simpleRestProvider("/api")
 
@@ -25,6 +27,8 @@ const App = () => {
       <Resource
         name="units"
         list={UnitList}
+        edit={UnitEdit}
+        create={UnitCreate}
         recordRepresentation="title"
       />
       <Resource
