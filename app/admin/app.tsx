@@ -15,6 +15,8 @@ import {LessonCreate} from "./lesson/lesson-create";
 import {LessonEdit} from "./lesson/lesson-edit";
 import {ChallengeCreate} from "./challenge/challenge-create";
 import {ChallengeEdit} from "./challenge/challenge-edit";
+import {ChallengeOptionCreate} from "./challenge-option/challenge-option-create";
+import {ChallengeOptionEdit} from "./challenge-option/challenge-option-edit";
 
 const dataProvider = simpleRestProvider("/api")
 
@@ -52,6 +54,8 @@ const App = () => {
       <Resource
         name="challenge_options"
         list={ChallengeOptionList}
+        edit={ChallengeOptionEdit}
+        create={ChallengeOptionCreate}
         options={{label: "Challenge Options"}}
       />
     </Admin>
